@@ -38,6 +38,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * This class implements a custom AlertDialog that prompts the user for fingerprint authentication.
@@ -205,11 +206,13 @@ public class FingerprintDialogFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        FingerprintHelperFragment fingerprintHelperFragment = (FingerprintHelperFragment)
-                getFragmentManager()
-                        .findFragmentByTag(BiometricPrompt.FINGERPRINT_HELPER_FRAGMENT_TAG);
-        if (fingerprintHelperFragment != null) {
-            fingerprintHelperFragment.cancel(FingerprintHelperFragment.USER_CANCELED_FROM_USER);
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            FingerprintHelperFragment fingerprintHelperFragment = (FingerprintHelperFragment)
+                    fragmentManager.findFragmentByTag(BiometricPrompt.FINGERPRINT_HELPER_FRAGMENT_TAG);
+            if (fingerprintHelperFragment != null) {
+                fingerprintHelperFragment.cancel(FingerprintHelperFragment.USER_CANCELED_FROM_USER);
+            }
         }
     }
 
