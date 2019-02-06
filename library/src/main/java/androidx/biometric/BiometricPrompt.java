@@ -370,7 +370,7 @@ public class BiometricPrompt implements BiometricConstants {
                     }
                 } else {
                     // May be null if no authentication is occurring.
-                    if (mFingerprintDialogFragment != null) {
+                    if (mFingerprintDialogFragment != null && mFingerprintDialogFragment.isVisible()) {
                         mFingerprintDialogFragment.dismiss();
                     }
                     if (mFingerprintHelperFragment != null) {
