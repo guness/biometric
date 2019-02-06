@@ -214,7 +214,7 @@ public class FingerprintHelperFragment extends Fragment {
             FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from(
                     mContext);
             if (handlePreAuthenticationErrors(fingerprintManagerCompat)) {
-                mHandler.obtainMessage(FingerprintDialogFragment.MSG_DISMISS_DIALOG).sendToTarget();
+                //mHandler.obtainMessage(FingerprintDialogFragment.MSG_DISMISS_DIALOG).sendToTarget();
                 cleanup();
             } else {
                 fingerprintManagerCompat.authenticate(
