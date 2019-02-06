@@ -33,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
@@ -45,6 +44,7 @@ import androidx.fragment.app.FragmentManager;
  * This class is not meant to be preserved across process death; for security reasons, the
  * BiometricPromptCompat will automatically dismiss the dialog when the activity is no longer in the
  * foreground.
+ *
  * @hide
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -87,19 +87,21 @@ public class FingerprintDialogFragment extends DialogFragment {
     final class H extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case MSG_SHOW_HELP:
-                    handleShowHelp((CharSequence) msg.obj);
-                    break;
-                case MSG_SHOW_ERROR:
-                    handleShowError(msg.arg1, (CharSequence) msg.obj);
-                    break;
-                case MSG_DISMISS_DIALOG:
-                    handleDismissDialog();
-                    break;
-                case MSG_RESET_MESSAGE:
-                    handleResetMessage();
-                    break;
+            if (isVisible()) {
+                switch (msg.what) {
+                    case MSG_SHOW_HELP:
+                        handleShowHelp((CharSequence) msg.obj);
+                        break;
+                    case MSG_SHOW_ERROR:
+                        handleShowError(msg.arg1, (CharSequence) msg.obj);
+                        break;
+                    case MSG_DISMISS_DIALOG:
+                        handleDismissDialog();
+                        break;
+                    case MSG_RESET_MESSAGE:
+                        handleResetMessage();
+                        break;
+                }
             }
         }
     }
@@ -224,7 +226,7 @@ public class FingerprintDialogFragment extends DialogFragment {
         TypedValue tv = new TypedValue();
         Resources.Theme theme = mContext.getTheme();
         theme.resolveAttribute(attr, tv, true /* resolveRefs */);
-        TypedArray arr = getActivity().obtainStyledAttributes(tv.data, new int[] {attr});
+        TypedArray arr = getActivity().obtainStyledAttributes(tv.data, new int[]{attr});
 
         final int color = arr.getColor(0 /* index */, 0 /* defValue */);
         arr.recycle();
@@ -242,6 +244,7 @@ public class FingerprintDialogFragment extends DialogFragment {
 
     /**
      * Sets the negative button listener.
+     *
      * @param listener
      */
     protected void setNegativeButtonListener(DialogInterface.OnClickListener listener) {
@@ -251,6 +254,7 @@ public class FingerprintDialogFragment extends DialogFragment {
     /**
      * Returns the handler; the handler is used by FingerprintHelperFragment to notify the UI of
      * changes from Fingerprint callbacks.
+     *
      * @return
      */
     protected Handler getHandler() {

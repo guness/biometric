@@ -27,7 +27,6 @@ import androidx.annotation.RestrictTo;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.concurrent.Executor;
 
@@ -68,6 +67,7 @@ public class FingerprintHelperFragment extends Fragment {
     private CancellationSignal mCancellationSignal;
 
     private Runnable mDialogTrigger;
+    private Runnable mDialogRunnable;
 
     // Also created once and retained.
     private final FingerprintManagerCompat.AuthenticationCallback mAuthenticationCallback =
@@ -112,8 +112,6 @@ public class FingerprintHelperFragment extends Fragment {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mHandler.obtainMessage(FingerprintDialogFragment.MSG_DISMISS_DIALOG)
-                                            .sendToTarget();
                                     mExecutor.execute(new Runnable() {
                                         @Override
                                         public void run() {
@@ -214,7 +212,7 @@ public class FingerprintHelperFragment extends Fragment {
             FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from(
                     mContext);
             if (handlePreAuthenticationErrors(fingerprintManagerCompat)) {
-                //mHandler.obtainMessage(FingerprintDialogFragment.MSG_DISMISS_DIALOG).sendToTarget();
+                mHandler.obtainMessage(FingerprintDialogFragment.MSG_DISMISS_DIALOG).sendToTarget();
                 cleanup();
             } else {
                 fingerprintManagerCompat.authenticate(
@@ -223,20 +221,21 @@ public class FingerprintHelperFragment extends Fragment {
                         mCancellationSignal,
                         mAuthenticationCallback,
                         null /* handler */);
-                mShowTime = System.currentTimeMillis();
-                mHandler.postDelayed(new Runnable() {
+                mDialogRunnable = new Runnable() {
                     @Override
                     public void run() {
                         mExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
-                                if (mShowTime > 0) {
+                                if (mShowTime > 0 && this == mDialogRunnable) {
                                     mDialogTrigger.run();
                                 }
                             }
                         });
                     }
-                }, GRACE_TIME);
+                };
+                mHandler.postDelayed(mDialogRunnable, GRACE_TIME);
+                mShowTime = System.currentTimeMillis();
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState);
