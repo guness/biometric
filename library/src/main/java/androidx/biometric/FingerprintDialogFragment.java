@@ -87,7 +87,7 @@ public class FingerprintDialogFragment extends DialogFragment {
     final class H extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
-            if (isVisible()) {
+            if (isResumed()) {
                 switch (msg.what) {
                     case MSG_SHOW_HELP:
                         handleShowHelp((CharSequence) msg.obj);

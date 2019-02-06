@@ -28,6 +28,7 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
 import androidx.fragment.app.Fragment;
 
+import java.util.UUID;
 import java.util.concurrent.Executor;
 
 /**
@@ -58,7 +59,7 @@ public class FingerprintHelperFragment extends Fragment {
     Handler mHandler;
 
     // Set once and retained.
-    private long mShowTime;
+    private ShowToken mShowToken = new ShowToken();
     private BiometricPrompt.CryptoObject mCryptoObject;
 
     // Created once and retained.
@@ -67,7 +68,6 @@ public class FingerprintHelperFragment extends Fragment {
     private CancellationSignal mCancellationSignal;
 
     private Runnable mDialogTrigger;
-    private Runnable mDialogRunnable;
 
     // Also created once and retained.
     private final FingerprintManagerCompat.AuthenticationCallback mAuthenticationCallback =
@@ -95,8 +95,8 @@ public class FingerprintHelperFragment extends Fragment {
                         }
                     } else if (errMsgId == BiometricPrompt.ERROR_LOCKOUT
                             || errMsgId == BiometricPrompt.ERROR_LOCKOUT_PERMANENT) {
-                        if (System.currentTimeMillis() - mShowTime < GRACE_TIME) {
-                            mShowTime = 0;
+                        if (System.currentTimeMillis() - mShowToken.time < GRACE_TIME) {
+                            mShowToken.clear();
                             mExecutor.execute(new Runnable() {
                                 @Override
                                 public void run() {
@@ -206,7 +206,7 @@ public class FingerprintHelperFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (mShowTime == 0) {
+        if (mShowToken.empty()) {
             mCancellationSignal = new CancellationSignal();
             mCanceledFrom = USER_CANCELED_FROM_NONE;
             FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from(
@@ -221,21 +221,16 @@ public class FingerprintHelperFragment extends Fragment {
                         mCancellationSignal,
                         mAuthenticationCallback,
                         null /* handler */);
-                mDialogRunnable = new Runnable() {
+                final String token = mShowToken.create();
+                mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mExecutor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mShowTime > 0 && this == mDialogRunnable) {
-                                    mDialogTrigger.run();
-                                }
-                            }
-                        });
+                        if (mShowToken.test(token)) {
+                            mDialogTrigger.run();
+                        }
                     }
-                };
-                mHandler.postDelayed(mDialogRunnable, GRACE_TIME);
-                mShowTime = System.currentTimeMillis();
+                }, GRACE_TIME);
+
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -283,7 +278,7 @@ public class FingerprintHelperFragment extends Fragment {
      * Remove the fragment so that resources can be freed.
      */
     void cleanup() {
-        mShowTime = 0;
+        mShowToken.clear();
         if (getActivity() != null) {
             getActivity().getSupportFragmentManager().beginTransaction().detach(this)
                     .commitAllowingStateLoss();
@@ -363,6 +358,30 @@ public class FingerprintHelperFragment extends Fragment {
             return new FingerprintManagerCompat.CryptoObject(cryptoObject.getMac());
         } else {
             return null;
+        }
+    }
+
+    static class ShowToken {
+        long time = 0;
+        String token = "";
+
+        void clear() {
+            time = 0;
+            token = "";
+        }
+
+        String create() {
+            time = System.currentTimeMillis();
+            token = UUID.randomUUID().toString();
+            return token;
+        }
+
+        boolean empty() {
+            return time == 0;
+        }
+
+        boolean test(String token) {
+            return time > 0 && this.token.equals(token);
         }
     }
 }
