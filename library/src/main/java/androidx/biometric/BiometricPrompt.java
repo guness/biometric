@@ -392,11 +392,17 @@ public class BiometricPrompt implements BiometricConstants {
                             mAuthenticationCallback);
                 }
             } else {
-                mFingerprintDialogFragment = (FingerprintDialogFragment) mFragmentActivity
-                        .getSupportFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG);
-                mFingerprintHelperFragment = (FingerprintHelperFragment) mFragmentActivity
+
+                FingerprintHelperFragment fingerprintHelperFragment = (FingerprintHelperFragment) mFragmentActivity
                         .getSupportFragmentManager().findFragmentByTag(
                                 FINGERPRINT_HELPER_FRAGMENT_TAG);
+
+                if (fingerprintHelperFragment != mFingerprintHelperFragment) {
+                    mFingerprintDialogFragment = (FingerprintDialogFragment) mFragmentActivity
+                            .getSupportFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG);
+
+                    mFingerprintHelperFragment = fingerprintHelperFragment;
+                }
 
                 if (DEBUG) Log.v(TAG, "FingerprintDialogFragment: " + mFingerprintDialogFragment);
                 if (DEBUG) Log.v(TAG, "FingerprintHelperFragment: " + mFingerprintHelperFragment);
