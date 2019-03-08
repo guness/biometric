@@ -33,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.AttrRes;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
@@ -50,13 +49,6 @@ import androidx.fragment.app.FragmentManager;
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class FingerprintDialogFragment extends DialogFragment {
-
-    @AttrRes
-    private static final int DEF_STYLE_ATTR = android.R.attr.alertDialogStyle;
-
-    @AttrRes
-    private static final int DEF_THEME_OVERLAY = android.R.attr.alertDialogTheme;
-
 
     private static final String TAG = "FingerprintDialogFragment";
     private static final String KEY_DIALOG_BUNDLE = "SavedBundle";
@@ -194,15 +186,6 @@ public class FingerprintDialogFragment extends DialogFragment {
         outState.putBundle(KEY_DIALOG_BUNDLE, mBundle);
     }
 
-    /*
-        private static Context createMaterialAlertDialogThemedContext(Context context) {
-            TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(DEF_THEME_OVERLAY, outValue, true);
-            int themeOverlayId = outValue.resourceId;
-            return new ContextThemeWrapper(
-                    createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES), themeOverlayId);
-        }
-        */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
