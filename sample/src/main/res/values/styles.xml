@@ -1,17 +1,63 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:alertDialogTheme">@style/AppDialogStyle</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AppDialogStyle" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+
+        <item name="dialogCornerRadius">4dp</item>
+
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+
+        <!-- Title text -->
+        <item name="textAppearanceHeadline6">@style/DialogTitle</item>
+
+        <!-- Supporting text -->
+        <item name="textAppearanceBody1">@style/DialogBody</item>
+
+        <!-- Button style -->
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+
+        <!-- Container -->
+        <item name="colorSurface">@color/white</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="rippleColor">@color/black_5</item>
+    </style>
+
+    <style name="DialogTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="DialogBody" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

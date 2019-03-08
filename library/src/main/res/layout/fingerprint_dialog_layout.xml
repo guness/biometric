@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2018 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,32 +15,34 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/fingerprint_dialog_root"
-              android:orientation="vertical">
+    android:id="@+id/fingerprint_dialog_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/fingerprint_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:textSize="16sp"
-        android:singleLine="true"
         android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"/>
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/fingerprint_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="0dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:textSize="16sp"
-        android:maxLines="4"/>
+        android:layout_marginEnd="24dp"
+        android:maxLines="4"
+        android:paddingTop="0dp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/fingerprint_icon"
@@ -55,15 +56,15 @@
         android:id="@+id/fingerprint_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:accessibilityLiveRegion="polite"
+        android:contentDescription="@string/accessibility_fingerprint_dialog_help_area"
+        android:gravity="center_horizontal"
         android:paddingTop="16dp"
         android:paddingBottom="24dp"
-        android:textSize="14sp"
-        android:gravity="center_horizontal"
-        android:accessibilityLiveRegion="polite"
         android:text="@string/fingerprint_dialog_touch_sensor"
-        android:contentDescription="@string/accessibility_fingerprint_dialog_help_area"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp" />
 
 </LinearLayout>
