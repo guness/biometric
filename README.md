@@ -1,2 +1,4 @@
 source: https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/biometric/
-last commit: 3269f7e Change androidx.biometric version to 1.1.0-alpha01
+last commit:
+
+`c4fb95c Merge "Adjust scope of Samsung biometric workaround" into androidx-master-dev by Treehugger Robot`
